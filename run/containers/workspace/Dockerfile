@@ -17,4 +17,3 @@ RUN addgroup --gid ${CONTAINER_GID} nonroot \
  && echo 'nonroot ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 USER ${CONTAINER_USER}
-
