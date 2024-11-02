@@ -1,0 +1,21 @@
+services:
+  workspace:
+    build:
+      context: ../..
+      dockerfile: ./run/containers/workspace/Dockerfile
+      args:
+        - CONTAINER_USER
+        - CONTAINER_UID
+        - CONTAINER_GID
+        - HTTP_PROXY
+        - HTTPS_PROXY
+        - NO_PROXY
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    environment:
+      - WORKSPACE_ROOT=/workspace
+      - SHUNIT2=/usr/bin/shunit2
+    command: sleep infinity
+    volumes:
+      - ../..:/workspace
