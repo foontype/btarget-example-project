@@ -15,7 +15,7 @@ services:
         - no_proxy
     environment:
       - WORKSPACE_ROOT=/workspace
-      - SHUNIT2=/usr/bin/shunit2
+      - TARGET_ENV=devcontainer
     command: sleep infinity
     volumes:
       - ../..:/workspace
