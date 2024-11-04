@@ -15,7 +15,7 @@ services:
         - no_proxy
     environment:
       - WORKSPACE_ROOT=/workspace
-      - TARGET_ENV=devcontainer
+      - TARGET_ENV=workspace
     command: sleep infinity
     volumes:
       - ../..:/workspace
