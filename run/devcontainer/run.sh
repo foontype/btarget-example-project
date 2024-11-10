@@ -3,7 +3,6 @@ set -e
 cd $(dirname "${0}")
 
 source ../supports/bask/src/bask.sh
-source ../supports/btarget/src/utils/autoenv.sh
 
 bask_default_task="usage"
 

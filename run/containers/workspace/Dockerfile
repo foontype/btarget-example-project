@@ -1,8 +1,7 @@
 FROM ubuntu
 
-ARG CONTAINER_USER=${CONTAINER_USER:-nonroot:nonroot}
-ARG CONTAINER_UID=${CONTAINER_UID:-1000}
-ARG CONTAINER_GID=${CONTAINER_GID:-1000}
+ARG CONTAINER_UID
+ARG CONTAINER_GID
 
 RUN apt-get update \
  && apt-get install -y \
@@ -11,9 +10,11 @@ RUN apt-get update \
         curl \
         shunit2
 
-RUN deluser ubuntu
-RUN addgroup --gid ${CONTAINER_GID} nonroot \
- && adduser --uid ${CONTAINER_UID} --gid ${CONTAINER_GID} --disabled-password nonroot \
- && echo 'nonroot ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+RUN if [ ! "${CONTAINER_UID}:${CONTAINER_GID}" = "0:0" ]; then \
+        deluser ubuntu \
+        && addgroup --gid ${CONTAINER_GID} nonroot \
+        && adduser --uid ${CONTAINER_UID} --gid ${CONTAINER_GID} --disabled-password nonroot \
+        && echo 'nonroot ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers; \
+    fi
 
-USER ${CONTAINER_USER}
+USER ${CONTAINER_UID}:${CONTAINER_GID}
