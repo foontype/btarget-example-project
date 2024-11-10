@@ -7,8 +7,7 @@ RUN apt-get update \
  && apt-get install -y \
         sudo \
         git \
-        curl \
-        shunit2
+        curl
 
 RUN if [ ! "${CONTAINER_UID}:${CONTAINER_GID}" = "0:0" ]; then \
         deluser ubuntu \
