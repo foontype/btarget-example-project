@@ -2,5 +2,4 @@
 set -e
 cd $(dirname ${0})
 
-source ./supports/btarget/src/target.sh
-
+source ./supports/btarget/src/btarget.sh
