@@ -16,7 +16,7 @@ task_create() {
         local new_project_dir="${new_project_export_dir}/${new_project_name}"
         local export_path="../.."
 
-        echo "Creating new project: ${new_project_name} (${new_project_dir})"
+        echo "creating new project \"${new_project_name}\" (${new_project_dir}) ..."
 
         mkdir -p "${project_dir}"
         (cd "${export_path}" && git archive --format=tar HEAD) \
