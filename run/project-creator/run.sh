@@ -21,4 +21,6 @@ task_create() {
         mkdir -p "${project_dir}"
         (cd "${export_path}" && git archive --format=tar HEAD) \
                 | tar -xvf - -C "${new_project_dir}"
+
+        echo "done."
 }
