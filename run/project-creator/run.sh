@@ -27,7 +27,7 @@ task_create() {
     _export_project "${template_source_path}" "${new_project_export_path}"
     _init_git "${new_project_export_path}"
     _init_project_submodules "${new_project_export_path}"
-    #_replace_project_name "${new_project_export_path}" "${new_project_name}"
+    _replace_project_name "${new_project_export_path}" "${new_project_name}"
 
     echo "done."
 }
@@ -75,12 +75,12 @@ _init_project_submodules() {
 
 _replace_project_name() {
     local export_path="${1}"
-    local project_name="${1}"
+    local project_name="${2}"
 
     (
         cd ${export_path}
         find . -type f -print0 \
-            | xargs -0 sed -i "s/btarget-example-project/${project_name}/g"
+            | xargs -0 sed -i "s|btarget-example-project|${project_name}|g"
     )
 }
 
