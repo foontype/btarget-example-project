@@ -18,18 +18,18 @@ task_usage() {
     bask_list_tasks
 
     echo ""
-    echo "Configurations:"
+    echo "configurations:"
     echo " * NEW_PROJECT_NAME=${NEW_PROJECT_NAME}"
     echo " * NEW_PROJECT_PATH=${NEW_PROJECT_PATH}"
     echo " * TEMPLATE_PROJECT_PATH=${TEMPLATE_PROJECT_PATH}"
 
     echo ""
-    echo "Submodules (These will be setup in new project):"
+    echo "submodules (these will be setup in new project):"
     _show_submodules
 
     echo ""
-    echo "Usage:"
-    echo "   Run 'create' task to create new project in '${NEW_PROJECT_PATH}'."
+    echo "usage:"
+    echo "   run 'create' task to create new project in '${NEW_PROJECT_PATH}'."
     echo ""
 }
 
