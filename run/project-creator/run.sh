@@ -18,15 +18,16 @@ task_create() {
     local new_project_name="${NEW_PROJECT_NAME:?}"
     local new_project_base_dir="${NEW_PROJECT_BASE_DIR:-../../..}"
     local new_project_export_path="$(cd "${new_project_base_dir}" && pwd)/${new_project_name}"
-    local template_export_path="../.."
+    local template_source_path="../.."
 
     echo "creating new project \"${new_project_name}\" (${new_project_export_path}) ..."
 
     mkdir -p "${new_project_export_path}"
 
-    _export_project "${new_project_export_path}"
+    _export_project "${template_source_path}" "${new_project_export_path}"
+    _init_git "${new_project_export_path}"
     _init_project_submodules "${new_project_export_path}"
-    _replace_project_name "${new_project_export_path}" "${new_project_name}"
+    #_replace_project_name "${new_project_export_path}" "${new_project_name}"
 
     echo "done."
 }
@@ -43,12 +44,22 @@ task_submodules() {
 }
 
 _export_project() {
-    local export_path="${1}"
+    local source_path="${1}"
+    local export_path="${2}"
 
-    (cd "${export_path}" && git archive --format=tar HEAD) \
+    (cd "${source_path}" && git archive --format=tar HEAD) \
         | tar -xvf - -C "${export_path}" ${EXPORT_OPTIONS}
 }
 
+_init_git() {
+    local export_path="${1}"
+
+    (
+        cd "${export_path}"
+        git init
+    )
+}
+ 
 _init_project_submodules() {
     local export_path="${1}"
 
@@ -80,6 +91,7 @@ _init_submodule() {
     git submodule deinit -f "${submodule_path}"
     git rm -f "${submodule_path}"
     rm -rf ".git/modules/${submodule_path}"
+    rmdir "${submodule_path}"
 
     git submodule add "${submodule_url}" "${submodule_path}"
 }
