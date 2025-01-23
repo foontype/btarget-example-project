@@ -2,9 +2,14 @@
 set -e
 cd $(dirname "${0}")
 
-EXPORT_OPTIONS="--exclude=\"README.md\""
-EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=\"run/project-creator\""
-EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=\"run/supports/*\""
+NEW_PROJECT_NAME="${NEW_PROJECT_NAME:?}"
+NEW_PROJECT_CREATE_BASE_DIR="${NEW_PROJECT_CREATE_BASE_DIR:-../../..}"
+NEW_PROJECT_CREATE_PATH="$(cd "${NEW_PROJECT_CREATE_BASE_DIR}" && pwd)/${NEW_PROJECT_NAME}"
+TEMPLATE_SOURCE_PATH="${TEMPLATE_SOURCE_PATH:-../../}"
+
+EXPORT_OPTIONS="--exclude=README.md"
+EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator"
+EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator/*"
 
 source ../supports/bask/src/bask.sh
 
@@ -12,88 +17,101 @@ bask_default_task="usage"
 
 task_usage() {
     bask_list_tasks
+
+    echo ""
+    echo "NEW_PROJECT_NAME=${NEW_PROJECT_NAME}"
+    echo "NEW_PROJECT_CREATE_BASE_DIR=${NEW_PROJECT_CREATE_BASE_DIR}"
+    echo "NEW_PROJECT_CREATE_PATH=${NEW_PROJECT_CREATE_PATH}"
+    echo "TEMPLATE_SOURCE_PATH=${TEMPLATE_SOURCE_PATH}"
+
+    echo ""
+    echo "submodules:"
+    _show_submodules
+    echo ""
 }
 
 task_create() {
-    local new_project_name="${NEW_PROJECT_NAME:?}"
-    local new_project_base_dir="${NEW_PROJECT_BASE_DIR:-../../..}"
-    local new_project_export_path="$(cd "${new_project_base_dir}" && pwd)/${new_project_name}"
-    local template_source_path="../.."
+    echo "creating new project \"${NEW_PROJECT_NAME}\" (${NEW_PROJECT_CREATE_PATH}) ..."
 
-    echo "creating new project \"${new_project_name}\" (${new_project_export_path}) ..."
-
-    mkdir -p "${new_project_export_path}"
-
-    _export_project "${template_source_path}" "${new_project_export_path}"
-    _init_git "${new_project_export_path}"
-    _init_project_submodules "${new_project_export_path}"
-    _replace_project_name "${new_project_export_path}" "${new_project_name}"
+    bask_sequence \
+        setup_project_dir \
+        setup_project_files \
+        setup_project_git \
+        setup_project_submodules \
+        setup_project_contents
 
     echo "done."
 }
 
-task_submodules() {
-    echo "submodules:"
-    _list_submodules
+task_setup_project_dir() {
+    mkdir -p "${NEW_PROJECT_CREATE_PATH}"
+}
 
-    echo ""
-    echo "submodule urls:"
+task_setup_project_files() {
+    _export_project "${TEMPLATE_SOURCE_PATH}" "${NEW_PROJECT_CREATE_PATH}"
+}
+
+task_setup_project_git() {
+    _init_git "${NEW_PROJECT_CREATE_PATH}"
+}
+
+task_setup_project_submodules() {
+    _init_submodules "${NEW_PROJECT_CREATE_PATH}"
+}
+
+task_setup_project_contents() {
+    _replace_content "${NEW_PROJECT_CREATE_PATH}" "${NEW_PROJECT_NAME}"
+}
+
+task_show_submodules() {
+    echo "submodules:"
     for s in $(_list_submodules); do
-        echo "${s} => $(_get_submodule_url "${s}")"
+        echo " * ${s} => $(_get_submodule_url "${s}")"
     done
 }
 
 _export_project() {
     local source_path="${1}"
-    local export_path="${2}"
+    local project_path="${2}"
 
     (cd "${source_path}" && git archive --format=tar HEAD) \
-        | tar -xvf - -C "${export_path}" ${EXPORT_OPTIONS}
+        | tar ${EXPORT_OPTIONS} -xvf - -C "${project_path}"
 }
 
 _init_git() {
-    local export_path="${1}"
+    local project_path="${1}"
 
     (
-        cd "${export_path}"
+        cd "${project_path}"
         git init
     )
 }
- 
-_init_project_submodules() {
-    local export_path="${1}"
+
+_init_submodules() {
+    local project_path="${1}"
 
     for s in $(_list_submodules); do
         local submodule_url=$(_get_submodule_url "${s}")
 
-        (
-            cd "${export_path}"
-            _init_submodule "${s}" "${submodule_url}"
-        )
+        _init_submodule "${project_path}" "${s}" "${submodule_url}"
     done
 }
 
-_replace_project_name() {
-    local export_path="${1}"
-    local project_name="${2}"
+_init_submodule() {
+    local project_path="${1}"
+    local submodule_path="${2}"
+    local submodule_url="${3}"
 
     (
-        cd ${export_path}
-        find . -type f -print0 \
-            | xargs -0 sed -i "s|btarget-example-project|${project_name}|g"
+        cd "${project_path}"
+
+        git submodule deinit -f "${submodule_path}"
+        git rm -f "${submodule_path}"
+        rm -rf ".git/modules/${submodule_path}"
+        rmdir "${submodule_path}"
+
+        git submodule add "${submodule_url}" "${submodule_path}"
     )
-}
-
-_init_submodule() {
-    local submodule_path="${1}"
-    local submodule_url="${2}"
-
-    git submodule deinit -f "${submodule_path}"
-    git rm -f "${submodule_path}"
-    rm -rf ".git/modules/${submodule_path}"
-    rmdir "${submodule_path}"
-
-    git submodule add "${submodule_url}" "${submodule_path}"
 }
 
 _list_submodules() {
@@ -106,4 +124,21 @@ _get_submodule_url() {
     local submodule_path="${1}"
 
     git config --file ../../.gitmodules submodule."$submodule_path".url
+}
+
+_show_submodules() {
+    for s in $(_list_submodules); do
+        echo " * ${s} => $(_get_submodule_url "${s}")"
+    done
+}
+
+_replace_content() {
+    local project_path="${1}"
+    local project_name="${2}"
+
+    (
+        cd ${project_path}
+        find . -type f -print0 \
+            | xargs -0 sed -i "s|btarget-example-project|${project_name}|g"
+    )
 }
