@@ -3,9 +3,8 @@ set -e
 cd $(dirname "${0}")
 
 NEW_PROJECT_NAME="${NEW_PROJECT_NAME:?}"
-NEW_PROJECT_CREATE_BASE_DIR="${NEW_PROJECT_CREATE_BASE_DIR:-../../..}"
-NEW_PROJECT_CREATE_PATH="$(cd "${NEW_PROJECT_CREATE_BASE_DIR}" && pwd)/${NEW_PROJECT_NAME}"
-TEMPLATE_SOURCE_PATH="${TEMPLATE_SOURCE_PATH:-../../}"
+NEW_PROJECT_PATH="$(cd "../../.." && pwd)/${NEW_PROJECT_NAME}"
+TEMPLATE_PROJECT_PATH="$(cd "../.." && pwd)"
 
 EXPORT_OPTIONS="--exclude=README.md"
 EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator"
@@ -19,19 +18,23 @@ task_usage() {
     bask_list_tasks
 
     echo ""
-    echo "NEW_PROJECT_NAME=${NEW_PROJECT_NAME}"
-    echo "NEW_PROJECT_CREATE_BASE_DIR=${NEW_PROJECT_CREATE_BASE_DIR}"
-    echo "NEW_PROJECT_CREATE_PATH=${NEW_PROJECT_CREATE_PATH}"
-    echo "TEMPLATE_SOURCE_PATH=${TEMPLATE_SOURCE_PATH}"
+    echo "Configurations:"
+    echo " * NEW_PROJECT_NAME=${NEW_PROJECT_NAME}"
+    echo " * NEW_PROJECT_PATH=${NEW_PROJECT_PATH}"
+    echo " * TEMPLATE_PROJECT_PATH=${TEMPLATE_PROJECT_PATH}"
 
     echo ""
-    echo "submodules:"
+    echo "Submodules (These will be setup in new project):"
     _show_submodules
+
+    echo ""
+    echo "Usage:"
+    echo "   Run 'create' task to create new project in '${NEW_PROJECT_PATH}'."
     echo ""
 }
 
 task_create() {
-    echo "creating new project \"${NEW_PROJECT_NAME}\" (${NEW_PROJECT_CREATE_PATH}) ..."
+    echo "creating new project \"${NEW_PROJECT_NAME}\" (${NEW_PROJECT_PATH}) ..."
 
     bask_sequence \
         setup_project_dir \
@@ -44,37 +47,30 @@ task_create() {
 }
 
 task_setup_project_dir() {
-    mkdir -p "${NEW_PROJECT_CREATE_PATH}"
+    mkdir -p "${NEW_PROJECT_PATH}"
 }
 
 task_setup_project_files() {
-    _export_project "${TEMPLATE_SOURCE_PATH}" "${NEW_PROJECT_CREATE_PATH}"
+    _export_project "${TEMPLATE_PROJECT_PATH}" "${NEW_PROJECT_PATH}"
 }
 
 task_setup_project_git() {
-    _init_git "${NEW_PROJECT_CREATE_PATH}"
+    _init_git "${NEW_PROJECT_PATH}"
 }
 
 task_setup_project_submodules() {
-    _init_submodules "${NEW_PROJECT_CREATE_PATH}"
+    _init_submodules "${NEW_PROJECT_PATH}"
 }
 
 task_setup_project_contents() {
-    _replace_content "${NEW_PROJECT_CREATE_PATH}" "${NEW_PROJECT_NAME}"
-}
-
-task_show_submodules() {
-    echo "submodules:"
-    for s in $(_list_submodules); do
-        echo " * ${s} => $(_get_submodule_url "${s}")"
-    done
+    _replace_content "${NEW_PROJECT_PATH}" "${NEW_PROJECT_NAME}"
 }
 
 _export_project() {
-    local source_path="${1}"
+    local tempalte_project_path="${1}"
     local project_path="${2}"
 
-    (cd "${source_path}" && git archive --format=tar HEAD) \
+    (cd "${tempalte_project_path}" && git archive --format=tar HEAD) \
         | tar ${EXPORT_OPTIONS} -xvf - -C "${project_path}"
 }
 
