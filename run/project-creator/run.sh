@@ -10,6 +10,9 @@ EXPORT_OPTIONS="--exclude=README.md"
 EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator"
 EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator/*"
 
+REPLACE_FIND_OPTIONS="-name .git"
+REPLACE_FIND_OPTIONS="${REPLACE_FIND_OPTIONS} -prune"
+
 source ../supports/bask/src/bask.sh
 
 bask_default_task="usage"
@@ -63,7 +66,7 @@ task_setup_project_submodules() {
 }
 
 task_setup_project_contents() {
-    _replace_content "${NEW_PROJECT_PATH}" "${NEW_PROJECT_NAME}"
+    _replace_contents "${NEW_PROJECT_PATH}" "${NEW_PROJECT_NAME}"
 }
 
 _export_project() {
@@ -128,13 +131,14 @@ _show_submodules() {
     done
 }
 
-_replace_content() {
+_replace_contents() {
     local project_path="${1}"
     local project_name="${2}"
 
     (
         cd "${project_path}"
-        find . -type f -print0 \
-            | xargs -0 sed -i "s|btarget-example-project|${project_name}|g"
+        find . -type f -print0 ${REPLACE_FIND_OPTIONS} | while read -r FILE; do
+            sed -i "s/btarget-example-project/${project_name}/g" "$FILE"
+        done
     )
 }
