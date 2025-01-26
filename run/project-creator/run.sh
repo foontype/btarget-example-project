@@ -69,10 +69,6 @@ task_setup_project_contents() {
     _replace_contents "${NEW_PROJECT_PATH}" "${NEW_PROJECT_NAME}"
 }
 
-task_bats() {
-    bats_docker
-}
-
 _export_project() {
     local template_project_path="${1}"
     local project_path="${2}"
