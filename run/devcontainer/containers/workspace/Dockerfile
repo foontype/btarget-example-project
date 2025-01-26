@@ -9,7 +9,8 @@ RUN apt-get update \
         git \
         curl
 
-ADD /run/containers/workspace/container-resources /container-resources
+ADD /run/devcontainer/containers/workspace/container-resources \
+    /container-resources
 
 RUN if [ ! "${CONTAINER_UID}:${CONTAINER_GID}" = "0:0" ]; then \
         deluser ubuntu \
