@@ -5,7 +5,7 @@ run_script_files() {
 
     for f in ${script_files}; do
         echo "${f}: start."
-        ${f}
+        bash ${f}
         echo "${f}: done."
     done
 }
