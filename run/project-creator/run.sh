@@ -67,10 +67,10 @@ task_setup_project_contents() {
 }
 
 _export_project() {
-    local tempalte_project_path="${1}"
+    local template_project_path="${1}"
     local project_path="${2}"
 
-    (cd "${tempalte_project_path}" && git archive --format=tar HEAD) \
+    (cd "${template_project_path}" && git archive --format=tar HEAD) \
         | tar ${EXPORT_OPTIONS} -xvf - -C "${project_path}"
 }
 
@@ -133,7 +133,7 @@ _replace_content() {
     local project_name="${2}"
 
     (
-        cd ${project_path}
+        cd "${project_path}"
         find . -type f -print0 \
             | xargs -0 sed -i "s|btarget-example-project|${project_name}|g"
     )
