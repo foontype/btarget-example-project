@@ -21,18 +21,18 @@ task_usage() {
     bask_list_tasks
 
     echo ""
-    echo "configurations:"
-    echo " * NEW_PROJECT_NAME=${NEW_PROJECT_NAME}"
-    echo " * NEW_PROJECT_PATH=${NEW_PROJECT_PATH}"
-    echo " * TEMPLATE_PROJECT_PATH=${TEMPLATE_PROJECT_PATH}"
+    echo "usage:"
+    echo "  run 'create' task to create new project in '${NEW_PROJECT_PATH}'."
 
     echo ""
     echo "submodules (these will be setup in new project):"
     _show_submodules
 
     echo ""
-    echo "usage:"
-    echo "   run 'create' task to create new project in '${NEW_PROJECT_PATH}'."
+    echo "configurations:"
+    echo "  * NEW_PROJECT_NAME=${NEW_PROJECT_NAME}"
+    echo "  * NEW_PROJECT_PATH=${NEW_PROJECT_PATH}"
+    echo "  * TEMPLATE_PROJECT_PATH=${TEMPLATE_PROJECT_PATH}"
     echo ""
 }
 
@@ -67,6 +67,10 @@ task_setup_project_submodules() {
 
 task_setup_project_contents() {
     _replace_contents "${NEW_PROJECT_PATH}" "${NEW_PROJECT_NAME}"
+}
+
+task_bats() {
+    bats_docker
 }
 
 _export_project() {
@@ -127,7 +131,7 @@ _get_submodule_url() {
 
 _show_submodules() {
     for s in $(_list_submodules); do
-        echo " * ${s} => $(_get_submodule_url "${s}")"
+        echo "  * ${s} => $(_get_submodule_url "${s}")"
     done
 }
 
