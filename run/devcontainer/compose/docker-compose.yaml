@@ -1,7 +1,7 @@
 services:
   workspace:
     build:
-      context: ../..
+      context: ../../..
       dockerfile: ./run/containers/workspace/Dockerfile
       args:
         - CONTAINER_UID=${CONTAINER_UID:?}
@@ -17,4 +17,4 @@ services:
       - RUN_TARGET_ENV=workspace
       - LOCAL_TERMINAL=${LOCAL_TERMINAL}
     volumes:
-      - ../..:/workspace
+      - ../../..:/workspace
