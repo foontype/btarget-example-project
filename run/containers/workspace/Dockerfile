@@ -7,7 +7,8 @@ RUN apt-get update \
  && apt-get install -y \
         sudo \
         git \
-        curl
+        curl \
+        jq
 
 ADD /run/containers/workspace/container-resources /container-resources
 
