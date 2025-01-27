@@ -10,8 +10,8 @@ EXPORT_OPTIONS="--exclude=README.md"
 EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator"
 EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator/*"
 
-REPLACE_FIND_OPTIONS="-name .git"
-REPLACE_FIND_OPTIONS="${REPLACE_FIND_OPTIONS} -prune"
+REPLACE_FIND_OPTIONS="-not -path \"*/.git/*\""
+#REPLACE_FIND_OPTIONS="${REPLACE_FIND_OPTIONS} -a -not -name .gitignore"
 
 source ../supports/bask/src/bask.sh
 
@@ -137,8 +137,9 @@ _replace_contents() {
 
     (
         cd "${project_path}"
-        find . -type f -print0 ${REPLACE_FIND_OPTIONS} | while read -r FILE; do
-            sed -i "s/btarget-example-project/${project_name}/g" "$FILE"
+        for f in $(eval find . -type f ${REPLACE_FIND_OPTIONS}); do
+            echo "replacing in ${f} ..."
+            sed -i "s/btarget-example-project/${project_name}/g" "${f}"
         done
     )
 }
