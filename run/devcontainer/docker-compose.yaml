@@ -12,9 +12,9 @@ services:
         - http_proxy
         - https_proxy
         - no_proxy
+    command: sleep infinity
     environment:
       - RUN_TARGET_ENV=workspace
       - LOCAL_TERMINAL=${LOCAL_TERMINAL}
-    command: sleep infinity
     volumes:
       - ../..:/workspace
