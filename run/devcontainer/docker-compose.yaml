@@ -14,6 +14,7 @@ services:
         - no_proxy
     environment:
       - RUN_TARGET_ENV=workspace
+      - LOCAL_TERMINAL=${LOCAL_TERMINAL}
     command: sleep infinity
     volumes:
       - ../..:/workspace
