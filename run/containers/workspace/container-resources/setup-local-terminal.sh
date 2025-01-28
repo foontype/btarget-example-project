@@ -25,6 +25,7 @@ if [ -n "${LOCAL_TERMINAL}" ]; then \
     fi
 
     mkdir -p /workspace/.vscode
+    touch /workspace/.vscode/settings.json
 
     jq -n "{
         \"terminal.integrated.defaultProfile.linux\": \"${REMOTE_COMMAND}\",
