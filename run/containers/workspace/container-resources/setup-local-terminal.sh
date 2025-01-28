@@ -2,15 +2,22 @@
 
 # Local terminal
 if [ -n "${LOCAL_TERMINAL}" ]; then \
-    REMOTE_COMMAND=$(basename "${LOCAL_TERMINAL}")
-    REMOTE_COMMAND_PATH=$(which "${REMOTE_COMMAND}")
-    LOCAL_COMMAND_PATH=$(dirname "${LOCAL_TERMINAL}")
+    IFS="|" read -r LOCAL_COMMAND_PATH REMOTE_COMMAND_PATH LOCAL_TERMINAL_REST <<< "${LOCAL_TERMINAL}"
+    IFS="|" read -r LOCAL_TERMINAL_ARGS <<< "${LOCAL_TERMINAL_REST}"
+
+    REMOTE_COMMAND=$(basename "${REMOTE_COMMAND_PATH}")
     LOCAL_COMMAND_DIR=$(dirname "${LOCAL_COMMAND_PATH}")
+
+    for a in ${LOCAL_TERMINAL_ARGS[@]}; do
+        LOCAL_COMMAND_ARGS="${LOCAL_COMMAND_ARGS:-}${LOCAL_COMMAND_ARGS:+", "}\"${a}\""
+    done
 
     if [ ! "$(id -u):$(id -g)" = "0:0" ]; then
         SUDO="sudo"
     fi
 
+    # NOTE: Ensure that paths are consistent between local shell and remote shell.
+    #       Remote shell ignores shell arguments.
     ${SUDO} mkdir -p "${LOCAL_COMMAND_DIR}"
     ${SUDO} bash -c "echo \"${REMOTE_COMMAND_PATH}\" > \"${LOCAL_COMMAND_PATH}\""
     ${SUDO} chmod 755 "${LOCAL_COMMAND_PATH}"
@@ -21,7 +28,8 @@ if [ -n "${LOCAL_TERMINAL}" ]; then \
         \"terminal.integrated.defaultProfile.linux\": \"${REMOTE_COMMAND}\",
         \"terminal.integrated.profiles.linux\": {
             \"${REMOTE_COMMAND}\": {
-                \"path\": \"${LOCAL_COMMAND_PATH}\"
+                \"path\": \"${LOCAL_COMMAND_PATH}\",
+                \"args\": [${LOCAL_COMMAND_ARGS}]
             }
         }
     }" | jq -s add /workspace/.vscode/settings.json - > /workspace/.vscode/settings.json.tmp
