@@ -139,7 +139,21 @@ _replace_contents() {
         cd "${project_path}"
         for f in $(eval find . -type f ${REPLACE_FIND_OPTIONS}); do
             echo "replacing in ${f} ..."
-            sed -i "s/btarget-example-project/${project_name}/g" "${f}"
+            _replace_file "s/btarget-example-project/${project_name}/g" "${f}"
         done
     )
+}
+
+_replace_file() {
+    local pattern="${1}"
+    local file="${2}"
+
+    case "${OSTYPE}" in
+    darwin*)
+        sed -i '' "${pattern}" "${file}"
+        ;;
+    *)
+        sed -i "${pattern}" "${file}"
+        ;;
+    esac
 }
