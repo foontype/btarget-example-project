@@ -1,6 +1,6 @@
 {
 	"name": "btarget-example-project",
-	"dockerComposeFile": "../run/devcontainer/compose/docker-compose.yaml",
+	"dockerComposeFile": "../run/devcontainer/docker-compose.yaml",
 	"service": "workspace",
 	"workspaceFolder": "/workspace",
 	"postCreateCommand": "bash /container-resources/post-create-command.sh",
