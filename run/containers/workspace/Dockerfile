@@ -8,10 +8,14 @@ RUN apt-get update \
         sudo \
         git \
         curl \
-        jq
+        jq \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
+# container resources
 ADD /run/containers/workspace/container-resources /container-resources
 
+# container user
 RUN if [ ! "${CONTAINER_UID}:${CONTAINER_GID}" = "0:0" ]; then \
         deluser ubuntu \
         && addgroup --gid ${CONTAINER_GID} nonroot \
