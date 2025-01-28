@@ -3,7 +3,7 @@
 run_script_files() {
     local script_files=("$@")
 
-    for f in ${script_files}; do
+    for f in ${script_files[@]}; do
         echo "${f}: start."
         bash ${f}
         echo "${f}: done."
