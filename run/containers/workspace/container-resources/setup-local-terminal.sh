@@ -7,8 +7,12 @@ if [ -n "${LOCAL_TERMINAL}" ]; then \
     LOCAL_COMMAND_PATH=$(dirname "${LOCAL_TERMINAL}")
     LOCAL_COMMAND_DIR=$(dirname "${LOCAL_COMMAND_PATH}")
 
-    mkdir -p "${LOCAL_COMMAND_DIR}"
-    ln -s "${REMOTE_COMMAND_PATH}" "${LOCAL_COMMAND_PATH}"
+    if [ ! "$(id -u):$(id -g)" = "0:0" ]; then
+        SUDO="sudo"
+    fi
+
+    ${SUDO} mkdir -p "${LOCAL_COMMAND_DIR}"
+    ${SUDO} ln -s "${REMOTE_COMMAND_PATH}" "${LOCAL_COMMAND_PATH}"
 
     mkdir -p /workspace/.vscode
 
