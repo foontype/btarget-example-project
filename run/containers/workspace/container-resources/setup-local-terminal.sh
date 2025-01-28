@@ -18,9 +18,11 @@ if [ -n "${LOCAL_TERMINAL}" ]; then \
 
     # NOTE: Ensure that paths are consistent between local shell and remote shell.
     #       Remote shell ignores shell arguments.
-    ${SUDO} mkdir -p "${LOCAL_COMMAND_DIR}"
-    ${SUDO} bash -c "echo \"${REMOTE_COMMAND_PATH}\" > \"${LOCAL_COMMAND_PATH}\""
-    ${SUDO} chmod 755 "${LOCAL_COMMAND_PATH}"
+    if [ ! -f "${LOCAL_COMMAND_PATH}" ]; then
+        ${SUDO} mkdir -p "${LOCAL_COMMAND_DIR}"
+        ${SUDO} bash -c "echo \"${REMOTE_COMMAND_PATH}\" > \"${LOCAL_COMMAND_PATH}\""
+        ${SUDO} chmod 755 "${LOCAL_COMMAND_PATH}"
+    fi
 
     mkdir -p /workspace/.vscode
 
