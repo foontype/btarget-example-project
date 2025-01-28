@@ -12,7 +12,8 @@ if [ -n "${LOCAL_TERMINAL}" ]; then \
     fi
 
     ${SUDO} mkdir -p "${LOCAL_COMMAND_DIR}"
-    ${SUDO} ln -s "${REMOTE_COMMAND_PATH}" "${LOCAL_COMMAND_PATH}"
+    ${SUDO} bash -c "echo \"${REMOTE_COMMAND_PATH}\" > \"${LOCAL_COMMAND_PATH}\""
+    ${SUDO} chmod 755 "${LOCAL_COMMAND_PATH}"
 
     mkdir -p /workspace/.vscode
 
