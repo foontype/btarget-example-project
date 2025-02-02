@@ -3,7 +3,7 @@
 	"dockerComposeFile": "../run/devcontainer/docker-compose.yaml",
 	"service": "workspace",
 	"workspaceFolder": "/workspace",
-	"postCreateCommand": "bash /container-resources/post-create-command.sh",
+	"postCreateCommand": "bash /init-container.sh",
 	"customizations": {
 		"vscode": {
 			"settings": {
