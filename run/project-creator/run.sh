@@ -251,7 +251,7 @@ _update_content() {
             case "${action_type}" in
             [FDX][FD])
                 if [ -e "${target_path}" ]; then
-                    rm -f "${target_path}"
+                    rm -rf "${target_path}"
                 fi
                 ;;
             esac
