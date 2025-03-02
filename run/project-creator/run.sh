@@ -13,6 +13,11 @@ EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator/*"
 REPLACE_FIND_OPTIONS="-not -path \"*/.git/*\""
 REPLACE_FIND_OPTIONS="${REPLACE_FIND_OPTIONS} -a -not -path \"*/run/supports/*\""
 
+UPDATE_PATHS="run/containers/workspace"
+UPDATE_PATHS="${UPDATE_PATHS} run/on-workspace/pyproject.toml"
+UPDATE_PATHS="${UPDATE_PATHS} .devcontainer/devcontainer.json"
+UPDATE_PATHS="${UPDATE_PATHS} .gitignore"
+
 source ../supports/bask/src/bask.sh
 
 bask_default_task="usage"
@@ -66,7 +71,37 @@ task_setup_project_submodules() {
 }
 
 task_setup_project_contents() {
-    _replace_contents "${NEW_PROJECT_PATH}" "${NEW_PROJECT_NAME}"
+    _replace_project_contents "${NEW_PROJECT_PATH}" "${NEW_PROJECT_NAME}"
+}
+
+task_diff() {
+    for f in ${UPDATE_PATHS}; do
+        _diff_content "${TEMPLATE_PROJECT_PATH}" "${NEW_PROJECT_PATH}" "${f}"
+    done
+}
+
+task_update() {
+    local go="${GO:-}"
+
+    for f in ${UPDATE_PATHS}; do
+        _update_content "${TEMPLATE_PROJECT_PATH}" "${NEW_PROJECT_PATH}" "${f}" "${go}"
+    done
+
+    if [ ! "${go}" = "go" ]; then
+        echo "'GO=\"go\" NEW_PROJECT_NAME=\"${NEW_PROJECT_NAME}\" ${0} update' will actually update files."
+    fi
+}
+
+task_import() {
+    local go="${GO:-}"
+
+    for f in ${UPDATE_PATHS}; do
+        _update_content "${NEW_PROJECT_PATH}" "${TARGET_PROJECT_PATH}" "${f}" "${go}"
+    done
+
+    if [ ! "${go}" = "go" ]; then
+        echo "'GO=\"go\" NEW_PROJECT_NAME=\"${NEW_PROJECT_NAME}\" ${0} update' will actually import files."
+    fi
 }
 
 _export_project() {
@@ -131,20 +166,34 @@ _show_submodules() {
     done
 }
 
-_replace_contents() {
+_replace_project_contents() {
     local project_path="${1}"
     local project_name="${2}"
 
+    _replace_dir_contents "${project_path}" "${project_name}"
+}
+
+_replace_dir_contents() {
+    local dir="${1}"
+    local project_name="${2}"
+
     (
-        cd "${project_path}"
+        cd "${dir}"
         for f in $(eval find . -type f ${REPLACE_FIND_OPTIONS}); do
             echo "replacing in ${f} ..."
-            _replace_file "s/btarget-example-project/${project_name}/g" "${f}"
+            _replace_file_contents "${f}" "${project_name}"
         done
     )
 }
 
-_replace_file() {
+_replace_file_contents() {
+    local file="${1}"
+    local project_name="${2}"
+
+    _replace_content "s/btarget-example-project/${project_name}/g" "${file}"
+}
+
+_replace_content() {
     local pattern="${1}"
     local file="${2}"
 
@@ -156,4 +205,71 @@ _replace_file() {
         sed -i "${pattern}" "${file}"
         ;;
     esac
+}
+
+_diff_content() {
+    local source_project_path="${1}"
+    local target_project_path="${2}"
+    local path="${3}"
+
+    (
+        local source_path="${source_project_path}/${path}"
+        local target_path="${target_project_path}/${path}"
+        local action_type="$(_file_type "${source_path}")$(_file_type "${target_path}")"
+
+        echo "${action_type} \"${source_path}\" -> \"${target_path}\""
+
+        case "${action_type}" in
+        FF) diff -u "${target_path}" "${source_path}";;
+        DD) diff -ur "${target_path}" "${source_path}";;
+        esac
+    )
+}
+
+_update_content() {
+    local source_project_path="${1}"
+    local target_project_path="${2}"
+    local path="${3}"
+    local go="${4}"
+
+    (
+        local source_path="${source_project_path}/${path}"
+        local target_path="${target_project_path}/${path}"
+        local action_type="$(_file_type "${source_path}")$(_file_type "${target_path}")"
+
+        echo "${action_type} \"${source_path}\" -> \"${target_path}\""
+
+        if [ "${go}" = "go" ]; then
+            case "${action_type}" in
+            [FDX][FD])
+                if [ -e "${target_path}" ]; then
+                    rm -f "${target_path}"
+                fi
+                ;;
+            esac
+
+            case "${action_type}" in
+            F[FX])
+                cp "${source_path}" "${target_path}"
+                _replace_file_contents "${target_path}" "${NEW_PROJECT_NAME}"
+                ;;
+            D[DX])
+                cp -r "${source_path}" "${target_path}"
+                _replace_dir_contents "${target_path}" "${NEW_PROJECT_NAME}"
+                ;;
+            esac
+        fi
+    )
+}
+
+_file_type() {
+    local path="${1}"
+
+    if [ -f "${path}" ]; then
+        echo "F"
+    elif [ -d "${path}" ]; then
+        echo "D"
+    else
+        echo "X"
+    fi
 }
