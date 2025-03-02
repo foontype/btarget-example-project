@@ -87,7 +87,9 @@ task_update() {
         _update_content "${TEMPLATE_PROJECT_PATH}" "${NEW_PROJECT_PATH}" "${f}" "${go}"
     done
 
-    if [ ! "${go}" = "go" ]; then
+    if [ "${go}" = "go" ]; then
+        echo "done."
+    else
         echo "'GO=\"go\" NEW_PROJECT_NAME=\"${NEW_PROJECT_NAME}\" ${0} update' will actually update files."
     fi
 }
@@ -99,7 +101,9 @@ task_import() {
         _update_content "${NEW_PROJECT_PATH}" "${TARGET_PROJECT_PATH}" "${f}" "${go}"
     done
 
-    if [ ! "${go}" = "go" ]; then
+    if [ "${go}" = "go" ]; then
+        echo "done."
+    else
         echo "'GO=\"go\" NEW_PROJECT_NAME=\"${NEW_PROJECT_NAME}\" ${0} update' will actually import files."
     fi
 }
