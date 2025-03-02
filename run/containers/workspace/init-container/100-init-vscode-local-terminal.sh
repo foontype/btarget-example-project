@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
 
-# Local terminal
-if [ -n "${LOCAL_TERMINAL}" ]; then \
+# VSCode Local Terminal
+if [ -n "${INIT_CONTAINER_VSCODE_LOCAL_TERMINAL}" ]; then
+    if [ -z "${LOCAL_TERMINAL}" ]; then
+        if [ -f "/workspace/.vscode/settings.json" ]; then
+            jq "del (.\"terminal.integrated.defaultProfile.linux\", \"terminal.integrated.profiles.linux\")" \
+                /workspace/.vscode/settings.json > /workspace/.vscode/settings.json.tmp
+            mv /workspace/.vscode/settings.json.tmp /workspace/.vscode/settings.json
+        fi
+        exit 0
+    fi
+
     IFS="|" read -r LOCAL_COMMAND_PATH REMOTE_COMMAND_PATH LOCAL_TERMINAL_REST <<< "${LOCAL_TERMINAL}"
     IFS="|" read -r LOCAL_TERMINAL_ARGS <<< "${LOCAL_TERMINAL_REST}"
 
@@ -11,10 +20,6 @@ if [ -n "${LOCAL_TERMINAL}" ]; then \
     for a in ${LOCAL_TERMINAL_ARGS[@]}; do
         LOCAL_COMMAND_ARGS="${LOCAL_COMMAND_ARGS:-}${LOCAL_COMMAND_ARGS:+", "}\"${a}\""
     done
-
-    if [ ! "$(id -u):$(id -g)" = "0:0" ]; then
-        SUDO="sudo"
-    fi
 
     # NOTE: Ensure that paths are consistent between local shell and remote shell.
     #       Remote shell ignores shell arguments.
@@ -45,12 +50,4 @@ if [ -n "${LOCAL_TERMINAL}" ]; then \
     echo ""
     echo "After reopen, \"Terminal: Create New Integrated Terminal (Local)\" in VSCode to open local terminal."
     echo ""
-
-else
-    if [ -f "/workspace/.vscode/settings.json" ]; then
-        jq "del (.\"terminal.integrated.defaultProfile.linux\", \"terminal.integrated.profiles.linux\")" \
-            /workspace/.vscode/settings.json > /workspace/.vscode/settings.json.tmp
-
-        mv /workspace/.vscode/settings.json.tmp /workspace/.vscode/settings.json
-    fi
 fi

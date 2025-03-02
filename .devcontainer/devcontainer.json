@@ -10,19 +10,26 @@
 				"workbench.iconTheme": "material-icon-theme",
 				"workbench.tree.indent": 20,
 				"explorer.compactFolders": false,
+				"files.trimTrailingWhitespace": true,
 				"terminal.integrated.defaultProfile.linux": "bash",
 				"terminal.integrated.profiles.linux": {
 					"bash": {
 						"path": "bash"
 					}
-				}
+				},
+				"python.defaultInterpreterPath": "/workspace/run/on-workspace/.venv/bin/python",
+				"python.analysis.extraPaths": [
+					"/workspace/run/on-workspace/.venv/lib/python3.12/site-packages"
+				],
+				"github.copilot.nextEditSuggestions.enabled": false
 			},
 			"extensions": [
 				"PKief.material-icon-theme",
 				"bierner.markdown-mermaid",
 				"corschenzi.mermaid-graphical-editor",
 				"ms-azuretools.vscode-docker",
-				"streetsidesoftware.code-spell-checker"
+				"streetsidesoftware.code-spell-checker",
+				"saoudrizwan.claude-dev"
 			]
 		}
 	}

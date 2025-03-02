@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 cd $(dirname "${0}")
 
-local files=(./init-resources/*)
+# Use sudo if the container user is root
+export SUDO=""
+if [ "${CONTAINER_USER}" = "0:0" ]; then
+    export SUDO="sudo"
+fi
 
-for f in "${files[@]}"; do
+# Run all init scripts
+script_files=(ls ./init-container/*)
+for f in ${script_files[@]}; do
   if [[ -f "$f" ]]; then
       echo "${f}: start."
       bash "$f"

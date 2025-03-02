@@ -1,2 +1,18 @@
+*.stackdump
+
+# python
+*.pyc
+__pycache__
+.pycache
+.pytest_cache
+.mypy_cache
+.env
+.venv
+
+# project
 /.vscode
 /run/devcontainer/.env
+/run/on-workspace/.uv
+/run/on-workspace/.pycache
+/run/on-workspace/.venv
+/run/on-workspace/.claude
