@@ -10,6 +10,7 @@
 				"workbench.iconTheme": "material-icon-theme",
 				"workbench.tree.indent": 20,
 				"explorer.compactFolders": false,
+				"files.trimTrailingWhitespace": true,
 				"terminal.integrated.defaultProfile.linux": "bash",
 				"terminal.integrated.profiles.linux": {
 					"bash": {
@@ -22,7 +23,8 @@
 				"bierner.markdown-mermaid",
 				"corschenzi.mermaid-graphical-editor",
 				"ms-azuretools.vscode-docker",
-				"streetsidesoftware.code-spell-checker"
+				"streetsidesoftware.code-spell-checker",
+				"saoudrizwan.claude-dev"
 			]
 		}
 	}

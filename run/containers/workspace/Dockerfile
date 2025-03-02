@@ -12,6 +12,21 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
+# npm
+RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
+RUN node -v && npm -v
+
+# uv
+ENV UV_INSTALL_DIR="/workspace/.uv"
+ENV PATH="/workspace/.uv:${PATH}"
+
+# claude code
+ENV CLAUDE_CONFIG_DIR=/workspace/.claude
+RUN npm config set os linux
+RUN npm install -g @anthropic-ai/claude-code
+
 # init resources
 ADD /run/containers/workspace/init-container.sh /init-container.sh
 ADD /run/containers/workspace/init-resources /init-resources
