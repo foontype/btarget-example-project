@@ -11,6 +11,8 @@ __pycache__
 
 # project
 /.vscode
+/.claude
+/.uv
 /run/devcontainer/.env
 /run/on-workspace/.uv
 /run/on-workspace/.pycache
