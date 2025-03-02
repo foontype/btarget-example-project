@@ -29,6 +29,8 @@
                 "PKief.material-icon-theme",
                 "bierner.markdown-mermaid",
                 "corschenzi.mermaid-graphical-editor",
+                "ms-python.python",
+                "ms-python.vscode-pylance",
                 "ms-azuretools.vscode-docker",
                 "streetsidesoftware.code-spell-checker",
                 "saoudrizwan.claude-dev"
