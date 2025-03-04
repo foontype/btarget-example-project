@@ -19,10 +19,8 @@
                         "path": "bash"
                     }
                 },
-                "python.defaultInterpreterPath": "/workspace/run/on-workspace/.venv/bin/python",
-                "python.analysis.extraPaths": [
-                    "/workspace/run/on-workspace/.venv/lib/python3.12/site-packages"
-                ],
+                "python.defaultInterpreterPath": "/usr/bin/python",
+                "python.analysis.extraPaths": [],
                 "github.copilot.nextEditSuggestions.enabled": false
             },
             "extensions": [
