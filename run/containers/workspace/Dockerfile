@@ -29,11 +29,6 @@ RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - && \
     rm -rf /var/lib/apt/lists/*
 RUN node -v && npm -v
 
-# init container: uv
-ENV INIT_CONTAINER_UV=1
-ENV UV_INSTALL_DIR="/workspace/run/on-workspace/.uv"
-ENV PATH="${UV_INSTALL_DIR}:${PATH}"
-
 # init container: python
 ENV INIT_CONTAINER_PYTHON=1
 ENV PYTHONPYCACHEPREFIX="/workspace/run/on-workspace/.pycache"
@@ -45,13 +40,10 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
  && ln -s /usr/bin/python3 /usr/bin/python
 
-# init container: poetry
-ENV INIT_CONTAINER_POETRY=1
-ENV POETRY_PROJECT_PATH="/workspace/run/on-workspace"
-ENV POETRY_HOME="/opt/poetry"
-ENV PATH="${POETRY_HOME}/bin:${PATH}"
-ENV PATH="${POETRY_PROJECT_PATH}/.venv/bin:${PATH}"
-RUN curl -sSL https://install.python-poetry.org | python -
+# init container: uv
+ENV INIT_CONTAINER_UV=1
+ENV UV_INSTALL_DIR="/workspace/run/on-workspace/.uv"
+ENV PATH="${UV_INSTALL_DIR}:${PATH}"
 
 # init container: claude code
 ENV INIT_CONTAINER_CLAUDE_CODE=1
