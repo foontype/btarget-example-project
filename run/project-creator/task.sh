@@ -14,7 +14,6 @@ REPLACE_FIND_OPTIONS="-not -path \"*/.git/*\""
 REPLACE_FIND_OPTIONS="${REPLACE_FIND_OPTIONS} -a -not -path \"*/run/supports/*\""
 
 UPDATE_PATHS="run/containers/workspace"
-UPDATE_PATHS="${UPDATE_PATHS} run/on-workspace/pyproject.toml"
 UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/.env.example"
 UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/.env.example.cygwin"
 UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/.env.example.mac"

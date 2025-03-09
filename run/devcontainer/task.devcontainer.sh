@@ -10,6 +10,10 @@ task_usage() {
     bask_list_tasks
 }
 
+task_down() {
+    docker compose down
+}
+
 task_init() {
     # FIXME: write init code here.
     echo "there is nothing that needs to be init in the workspace."

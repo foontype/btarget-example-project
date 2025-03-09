@@ -13,8 +13,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 # init container
-ADD /run/containers/workspace/init-container.sh /init-container.sh
-ADD /run/containers/workspace/init-container /init-container
+ADD run/devcontainer/init-container /init-container
 
 # init container: vscode local terminal
 ENV INIT_CONTAINER_VSCODE_LOCAL_TERMINAL=1
@@ -31,7 +30,7 @@ RUN node -v && npm -v
 
 # init container: python
 ENV INIT_CONTAINER_PYTHON=1
-ENV PYTHONPYCACHEPREFIX="/workspace/run/on-workspace/.pycache"
+ENV PYTHONPYCACHEPREFIX="/workspace/run/devcontainer/.pycache"
 RUN apt-get update \
  && apt-get install -y \
         python3 \
@@ -42,12 +41,12 @@ RUN apt-get update \
 
 # init container: uv
 ENV INIT_CONTAINER_UV=1
-ENV UV_INSTALL_DIR="/workspace/run/on-workspace/.uv"
+ENV UV_INSTALL_DIR="/workspace/run/devcontainer/.uv"
 ENV PATH="${UV_INSTALL_DIR}:${PATH}"
 
 # init container: claude code
 ENV INIT_CONTAINER_CLAUDE_CODE=1
-ENV CLAUDE_CONFIG_DIR="/workspace/run/on-workspace/.claude"
+ENV CLAUDE_CONFIG_DIR="/workspace/run/devcontainer/.claude"
 RUN npm config set os linux
 RUN npm install -g @anthropic-ai/claude-code
 

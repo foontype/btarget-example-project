@@ -8,7 +8,7 @@ if [ "${CONTAINER_USER}" = "0:0" ]; then
 fi
 
 # Run all init scripts
-script_files=(ls ./init-container/*)
+script_files=(ls ./[0-9]*)
 for f in ${script_files[@]}; do
   if [[ -f "$f" ]]; then
       echo "${f}: start."
