@@ -18,6 +18,8 @@ UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/.env.example"
 UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/.env.example.cygwin"
 UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/.env.example.mac"
 UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/.env.example.wsl"
+UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/init-container"
+UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/Dockerfile"
 UPDATE_PATHS="${UPDATE_PATHS} .devcontainer/devcontainer.json"
 UPDATE_PATHS="${UPDATE_PATHS} .gitignore"
 
