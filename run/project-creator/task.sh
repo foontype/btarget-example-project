@@ -15,7 +15,6 @@ REPLACE_FIND_OPTIONS="${REPLACE_FIND_OPTIONS} -a -not -path \"*/run/supports/*\"
 
 UPDATE_PATHS="run/devcontainer/.gitignore"
 UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/init-container"
-UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/docker-make.bat"
 UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/docker-make.sh"
 UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/Dockerfile.base"
 UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/Dockerfile.user-workspace"
