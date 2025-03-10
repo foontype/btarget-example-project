@@ -2,7 +2,7 @@ services:
   workspace:
     build:
       context: ../..
-      dockerfile: ./run/devcontainer/Dockerfile
+      dockerfile: ./run/devcontainer/workspace.Dockerfile
       args:
         - CONTAINER_UID=${CONTAINER_UID:?}
         - CONTAINER_GID=${CONTAINER_GID:?}
@@ -14,7 +14,7 @@ services:
         - no_proxy
     command: sleep infinity
     environment:
-      - RUN_TARGET=devcontainer
+      - RUN_TARGET_ENV=workspace
       - LOCAL_TERMINAL=${LOCAL_TERMINAL}
     volumes:
       - ../..:/workspace
