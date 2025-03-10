@@ -3,7 +3,7 @@
     "dockerComposeFile": "../run/devcontainer/docker-compose.yaml",
     "service": "workspace",
     "workspaceFolder": "/workspace",
-    "initializeCommand": "docker run --rm -v .:/workspace alpine sh /workspace/run/devcontainer/workspace/make.sh",
+    "initializeCommand": "docker run --rm -v .:/workspace alpine sh /workspace/run/devcontainer/containers/workspace/make.sh",
     "postCreateCommand": "bash /init-container/init.sh",
     "customizations": {
         "vscode": {

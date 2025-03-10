@@ -13,7 +13,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 # init container
-ADD run/devcontainer/workspace/init-container /init-container
+ADD run/devcontainer/containers/workspace/init-container /init-container
 
 # init container: vscode local terminal
 ENV INIT_CONTAINER_VSCODE_LOCAL_TERMINAL=1
@@ -30,11 +30,11 @@ RUN node -v && npm -v
 
 # init container: uv
 ENV INIT_CONTAINER_UV=1
-ENV UV_INSTALL_DIR="/workspace/run/devcontainer/workspace/.uv"
+ENV UV_INSTALL_DIR="/workspace/run/devcontainer/containers/workspace/.uv"
 ENV PATH="${UV_INSTALL_DIR}:${PATH}"
 
 # init container: claude code
 ENV INIT_CONTAINER_CLAUDE_CODE=1
-ENV CLAUDE_CONFIG_DIR="/workspace/run/devcontainer/workspace/.claude"
+ENV CLAUDE_CONFIG_DIR="/workspace/run/devcontainer/containers/workspace/.claude"
 RUN npm config set os linux
 RUN npm install -g @anthropic-ai/claude-code

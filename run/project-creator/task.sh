@@ -13,7 +13,7 @@ EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator/*"
 REPLACE_FIND_OPTIONS="-not -path \"*/.git/*\""
 REPLACE_FIND_OPTIONS="${REPLACE_FIND_OPTIONS} -a -not -path \"*/run/supports/*\""
 
-UPDATE_PATHS="run/devcontainer/workspace"
+UPDATE_PATHS="run/devcontainer/containers/workspace"
 #UPDATE_PATHS="${UPDATE_PATHS} ..."
 
 source ../supports/bask/src/bask.sh
