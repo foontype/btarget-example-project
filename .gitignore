@@ -11,7 +11,3 @@ __pycache__
 
 # project
 /.vscode
-/run/devcontainer/.env
-/run/devcontainer/.claude
-/run/devcontainer/.pycache
-/run/devcontainer/.uv

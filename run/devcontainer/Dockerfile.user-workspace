@@ -1,0 +1,14 @@
+FROM workspace as user-workspace
+
+# container user
+ENV CONTAINER_USER="${CONTAINER_UID}:${CONTAINER_GID}"
+ENV CONTAINER_UID="${CONTAINER_UID}"
+ENV CONTAINER_GID="${CONTAINER_GID}"
+RUN if [ ! "${CONTAINER_UID}:${CONTAINER_GID}" = "0:0" ]; then \
+        deluser ubuntu \
+        && addgroup --gid ${CONTAINER_GID} nonroot \
+        && adduser --uid ${CONTAINER_UID} --gid ${CONTAINER_GID} --disabled-password nonroot \
+        && echo 'nonroot ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers; \
+    fi
+
+USER ${CONTAINER_UID}:${CONTAINER_GID}

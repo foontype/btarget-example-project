@@ -3,6 +3,9 @@
     "dockerComposeFile": "../run/devcontainer/docker-compose.yaml",
     "service": "workspace",
     "workspaceFolder": "/workspace",
+    "initializeCommand": {
+        "windows": "run\\devcontainer\\docker-make.bat"
+    },
     "postCreateCommand": "bash /init-container/init.sh",
     "customizations": {
         "vscode": {
@@ -19,8 +22,6 @@
                         "path": "bash"
                     }
                 },
-                "python.defaultInterpreterPath": "/usr/bin/python",
-                "python.analysis.extraPaths": [],
                 "github.copilot.nextEditSuggestions.enabled": false
             },
             "extensions": [
