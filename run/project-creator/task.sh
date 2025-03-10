@@ -9,12 +9,18 @@ TEMPLATE_PROJECT_PATH="$(cd "../.." && pwd)"
 EXPORT_OPTIONS="--exclude=README.md"
 EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator"
 EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator/*"
+EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/devcontainer/containers/workspace/.claude"
+EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/devcontainer/containers/workspace/.uv"
+EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/devcontainer/containers/workspace/Dockerfile"
 
 REPLACE_FIND_OPTIONS="-not -path \"*/.git/*\""
 REPLACE_FIND_OPTIONS="${REPLACE_FIND_OPTIONS} -a -not -path \"*/run/supports/*\""
 
-UPDATE_PATHS="run/devcontainer/containers/workspace"
-#UPDATE_PATHS="${UPDATE_PATHS} ..."
+UPDATE_PATHS="run/devcontainer/containers/workspace/init-container"
+UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/containers/workspace/.gitignore"
+UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/containers/workspace/Dockerfile.base"
+UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/containers/workspace/Dockerfile.user-workspace"
+UPDATE_PATHS="${UPDATE_PATHS} run/devcontainer/containers/workspace/make.sh"
 
 source ../supports/bask/src/bask.sh
 
