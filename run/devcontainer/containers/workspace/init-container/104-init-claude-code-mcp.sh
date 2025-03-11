@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 if [ -n "${INIT_CONTAINER_CLAUDE_CODE}" -a -n "${INIT_CONTAINER_UV}" ]; then
+    cd /workspace
+
     # https://www.claudemcp.com/servers
 
     # mcp-server-fetch
