@@ -10,7 +10,7 @@ EXPORT_OPTIONS="--exclude=README.md"
 EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=.vscode"
 EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator"
 EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/project-creator/*"
-EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/devcontainer/.caches"
+EXPORT_OPTIONS="${EXPORT_OPTIONS} --exclude=run/devcontainer/.cache"
 
 REPLACE_FIND_OPTIONS="-not -path \"*/.git/*\""
 REPLACE_FIND_OPTIONS="${REPLACE_FIND_OPTIONS} -a -not -path \"*/run/supports/*\""

@@ -2,7 +2,7 @@ services:
   workspace:
     build:
       context: ../..
-      dockerfile: ./run/devcontainer/.caches/Dockerfile
+      dockerfile: ./run/devcontainer/.cache/Dockerfile
       target: user-workspace
       args:
         - CONTAINER_UID=${CONTAINER_UID:?}
