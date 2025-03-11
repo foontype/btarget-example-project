@@ -1,4 +1,4 @@
-FROM workspace as user-workspace
+FROM workspace AS user-workspace
 
 # container user
 ENV CONTAINER_USER="${CONTAINER_UID}:${CONTAINER_GID}"

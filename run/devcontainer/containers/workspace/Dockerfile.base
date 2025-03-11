@@ -1,4 +1,4 @@
-FROM ubuntu as base
+FROM ubuntu AS base
 
 ARG CONTAINER_UID
 ARG CONTAINER_GID
@@ -15,11 +15,11 @@ RUN apt-get update \
 # init container
 ADD run/devcontainer/containers/workspace/init-container /init-container
 
+# init container: caches
+ENV INIT_CONTAINER_CASHES=1
+
 # init container: vscode local terminal
 ENV INIT_CONTAINER_VSCODE_LOCAL_TERMINAL=1
-
-# init container: workspace
-ENV INIT_CONTAINER_WORKSPACE=1
 
 # init container: npm
 ENV INIT_CONTAINER_NPM=1
@@ -38,3 +38,6 @@ ENV INIT_CONTAINER_CLAUDE_CODE=1
 ENV CLAUDE_CONFIG_DIR="/workspace/run/devcontainer/.caches/claude"
 RUN npm config set os linux
 RUN npm install -g @anthropic-ai/claude-code
+
+# init container: workspace
+ENV INIT_CONTAINER_WORKSPACE=1
