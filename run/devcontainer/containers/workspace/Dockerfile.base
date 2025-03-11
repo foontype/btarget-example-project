@@ -15,8 +15,8 @@ RUN apt-get update \
 # init container
 ADD run/devcontainer/containers/workspace/init-container /init-container
 
-# init container: caches
-ENV INIT_CONTAINER_CASHES=1
+# init container: cache
+ENV INIT_CONTAINER_CACHE=1
 
 # init container: vscode local terminal
 ENV INIT_CONTAINER_VSCODE_LOCAL_TERMINAL=1
