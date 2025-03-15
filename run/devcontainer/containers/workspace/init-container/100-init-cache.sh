@@ -5,5 +5,5 @@ if [ -n "${INIT_CONTAINER_CACHE}" ]; then
         mkdir -p ./run/devcontainer/.cache
     fi
 
-    chown -R "${CONTAINER_USER}" ./run/devcontainer/.cache
+    ${SUDO} chown -R "${CONTAINER_USER}" ./run/devcontainer/.cache
 fi
