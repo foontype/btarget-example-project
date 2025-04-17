@@ -17,6 +17,7 @@ services:
     environment:
       - RUN_TARGET_ENV=workspace
       - LOCAL_TERMINAL=${LOCAL_TERMINAL}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
       - HTTP_PROXY
       - HTTPS_PROXY
       - NO_PROXY
