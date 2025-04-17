@@ -39,5 +39,11 @@ ENV CLAUDE_CONFIG_DIR="/workspace/run/devcontainer/.cache/claude"
 RUN npm config set os linux
 RUN npm install -g @anthropic-ai/claude-code
 
+# init container: openai codex
+ENV INIT_CONTAINER_OPENAI_CODEX=1
+ENV CODEX_CONFIG="/workspace/run/devcontainer/.cache/codex"
+RUN npm config set os linux
+RUN npm install -g @openai/codex
+
 # init container: workspace
 ENV INIT_CONTAINER_WORKSPACE=1
